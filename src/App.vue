@@ -171,7 +171,7 @@ export default {
       this.error = this.validate() == null;
       if (!this.error) {
         this.show_price = true;
-        fetch("https://mobile-price-predict.azurewebsites.net/", {
+        fetch("https://mobile-price-predict.azurewebsites.net/predict/", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -190,7 +190,10 @@ export default {
         })
           .then((res) => res.json())
           .then((data) => {
-            this.price = Math.round(data.price * 1000);
+            const price = Math.round(data.price * 1000);
+            this.price = price.toLocaleString(
+              undefined // leave undefined to use the visitor's browser
+            );
             this.loading = false;
           })
           .catch((error) => console.log(error));
